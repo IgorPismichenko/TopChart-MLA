@@ -1,0 +1,118 @@
+﻿@model IEnumerable<TopChart_BLL.DTO.TracksDTO>
+
+@{
+    ViewData["Title"] = "Audio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="width:800px">
+    <header>
+        <div id="header">
+            <a style="font-weight:bold; font-size:14pt; color:white; margin:5px" asp-area="" asp-controller="HomeAudio" asp-action="Audio">TOP Chart</a>
+            <div id="divSearch">
+                <form style="display:flex" asp-action="Search" method="post">
+                    <input type="text" name="search" id="search" />
+                    <input type="submit" value="" id="searchButton" asp-area="" asp-controller="HomeAudio" asp-action="Search" />
+                </form>
+            </div>
+            <div style="margin-right: 5px">
+                <div>
+                    <label style="text-align:center; width: 100px; color:white">Hello @Context.Session.GetString("Login")</label>
+                </div>
+                <div>
+                    <a asp-area="" asp-controller="HomeAudio" asp-action="Logout" style="font-size:10pt; color:white; display: inline-block; width: 100px;">Log out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div style="display:flex">
+        <main id="aside">
+            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">Menu</label><br />
+            <hr style="margin:1px" />
+            @if (Context.Session.GetInt32("Status") == 1)
+            {
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="Create">New track</a><br />
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="CreateSinger">New singer</a><br />
+            }
+            else if (Context.Session.GetInt32("Status") == 2)
+            {
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="EditUser">UsersList</a><br />
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="Create">New track</a><br />
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="CreateSinger">New singer</a><br />
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="CreateGenre">New genre</a><br />
+            }
+            <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeVideo" asp-action="Video">Video</a><br />
+            <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="Top">Top Chart</a><br />
+            <button id="singerButton">Singer</button><br />
+            <div id="sortSinger" style="display:none">
+                <a style="margin-left:25px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="SortByName">Name</a><br />
+                <a style="margin-left:25px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="SortByRate">Rate</a>
+            </div>
+            <button id="genreButton">Genre</button>
+            <div id="sortGenre" style="display:none">
+                @foreach (var m in ViewBag.Genre)
+                {
+                    <a style="margin-left:25px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="SortByGenre" asp-route-id="@m.Id">@m.Name</a><br />
+                }
+            </div>
+            <br /><br />
+            <hr style="margin-bottom:5px" />
+            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">Top singers</label><br />
+            <div>
+                @for (var i = 0; i < ViewBag.TopSingers.Count; i++)
+                {
+                    <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="SortByName" asp-route-id="@ViewBag.TopSingers[i].Id">@ViewBag.TopSingers[i].Singer.Name</a><br />
+                    if (i == 7)
+                        break;
+                }
+            </div>
+        </main>
+<aside id="main">
+    @if (Model.Count() > 0)
+    {
+        <div style="display:flex; flex-direction:column; justify-content:center;align-items:center">
+            <label style="color:#2F4F4F; font-size:14px; font-weight:bold; margin-top:10px">Latest arrivals</label>
+            <div>
+                @foreach (var m in Model)
+                {
+                    @if (Context.Session.GetInt32("Status") > 0)
+                    {
+                        <label style="color:#2F4F4F">@m.Name - @m.Singer?.Name</label>
+                        <div style="display:flex; justify-content:center;align-items:center">
+                            <audio controls>
+                                <source src="@m.Path" />
+                            </audio>
+                                    <a id="aLike" asp-controller="HomeAudio" asp-action="Like" asp-route-id="@m.Id"><img class="likeIm" src="/Logo/like.png" /></a><label style="color:#2F4F4F">@m.Like</label> | <a id="a3" style="width: 40px" asp-controller="HomeAudio" asp-action="Details" asp-route-id="@m.Id">Details</a>
+                        </div>
+                        <div id="runningWrapper">                 
+                            <label id="runningLabel">Track: @m.Name, Singer: @m.Singer?.Name, Album: @m.Album, Genre: @m.Genre?.Name, Added on: @m.Date, Size: @m.Size</label>
+                        </div>
+                        <div><hr style="margin-top: 0; width:390px; border-color: #0a2980" /></div>
+                    }
+                    else
+                    {
+                        <label style="color:#2F4F4F">@m.Name - @m.Singer?.Name</label>
+                        <div style="display:flex; justify-content:center;align-items:center">
+                            <audio controls>
+                               <source src="@m.Path" />
+                            </audio>
+                            <a id="a3" style="width: 40px" asp-controller="HomeAudio" asp-action="Details" asp-route-id="@m.Id">Details</a>
+                        </div>
+                        <div id="runningWrapper" style="width: 335px">
+                            <label id="runningLabel">Track: @m.Name, Singer: @m.Singer?.Name, Album: @m.Album, Genre: @m.Genre?.Name, Added on: @m.Date, Size: @m.Size</label>
+                        </div>
+                        <div><hr style="margin-top: 0; width:335px; border-color: #0a2980" /></div>
+                    }
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div style="text-align: center">
+           <p>It`s nothing to play. Add some music!</p>
+           <img style="width: 450px; height: 400px" src="~/Logo/Vinil.png" />
+        </div>
+    }
+</aside>
+</div>
+</div>

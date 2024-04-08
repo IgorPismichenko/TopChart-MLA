@@ -1,0 +1,45 @@
+﻿@model TopChart_BLL.DTO.LoginModelDTO
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="width:800px">
+    <header>
+        <div id="header">
+            <a style="font-weight:bold; font-size:14pt; color:white; margin:5px" asp-area="" asp-controller="Home" asp-action="Index">TOP Chart</a>
+        </div>
+    </header>
+    <div style="background-image:url('/Logo/dj.jpg');background-size:cover; width:800px;min-height:90vh; border-radius:7px; margin-top:10px;display:flex">
+        <div style="min-height:90vh; width:400px"></div>
+        <div style="min-height:90vh; width:400px; background-color: rgba(255,255,255,0.3)" id="mainReg">
+            <form asp-action="Login" method="post" enctype="multipart/form-data" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>
+                
+                <input asp-for="Login" class="formControl" placeholder="login"/><br />
+                <span style="font-size: 8pt" asp-validation-for="Login" class="text-danger"></span>
+            </div>
+            <div>
+                
+                <input asp-for="Password" class="formControl" placeholder="password"/><br />
+                <span style="font-size: 8pt" asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div style="margin-top: 15px; text-align:center">
+                <input type="submit" value="Enter" class="button" />
+            </div>
+            <div style="margin-top: 5px; text-align:center">
+                <label style="color:#00FFFF">Don`t have account?
+                <a style="border: 0; color: red; font-size: 8pt; box-shadow:none" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                </label>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,128 @@
+﻿@model TopChart_BLL.DTO.TracksDTO
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="width:800px">
+    <header>
+        <div id="header">
+            <a style="font-weight:bold; font-size:14pt; color:white; margin:5px" asp-area="" asp-controller="HomeAudio" asp-action="Audio">TOP Chart</a>
+            <div style="margin-right: 5px">
+                <div>
+                    <label style="text-align:center; width: 100px; color:white">Hello @Context.Session.GetString("Login")</label>
+                </div>
+                <div>
+                    <a asp-area="" asp-controller="HomeAudio" asp-action="Logout" style="font-size:10pt; color:white; display: inline-block; width: 100px;">Log out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div style="display:flex">
+        <main id="aside">
+            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">Menu</label><br />
+            <hr style="margin:1px" />
+            @if (Context.Session.GetInt32("Status") == 1)
+            {
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="Create">New track</a>
+
+                <br />
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="CreateSinger">New singer</a>
+
+                <br />
+            }
+            else if (Context.Session.GetInt32("Status") == 2)
+            {
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="EditUser">UsersList</a>
+
+                <br />
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="Create">New track</a>
+
+                <br />
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="CreateSinger">New singer</a>
+
+                <br />
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="CreateGenre">New genre</a>
+
+                <br />
+            }
+            <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeVideo" asp-action="Video">Video</a><br />
+            <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="Top">Top Chart</a><br />
+            <button id="singerButton">Singer</button><br />
+            <div id="sortSinger" style="display:none">
+                <a style="margin-left:25px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="SortByName">Name</a><br />
+                <a style="margin-left:25px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="SortByRate">Rate</a>
+            </div>
+            <button id="genreButton">Genre</button>
+            <div id="sortGenre" style="display:none">
+                @foreach (var m in ViewBag.Genre)
+                {
+                    <a style="margin-left:25px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="SortByGenre" asp-route-id="@m.Id">@m.Name</a>
+
+                    <br />
+                }
+            </div>
+            <br /><br />
+            <hr style="margin-bottom:5px" />
+            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">Top singers</label><br />
+            <div>
+                @for (var i = 0; i < ViewBag.TopSingers.Count; i++)
+                {
+                    <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="SortByName" asp-route-id="@ViewBag.TopSingers[i].Id">@ViewBag.TopSingers[i].Singer.Name</a>
+
+                    <br />
+                    if (i == 7)
+                        break;
+                }
+            </div>
+        </main>
+    <aside id="main">
+        @{
+            int? iD = @Context.Session.GetInt32("Id");
+        }
+        <div style="display: flex; justify-content:center; align-items:center" >
+            <div style="margin-top: 30px;">
+                <img id="image" style="object-fit:fill" src=@Model.Singer?.Path />
+            </div>
+            <div style="margin-inline: 10px">
+                <label style="color:#2F4F4F">Title: @Model.Name</label><br />
+                <label style="color:#2F4F4F">Singer: @Model.Singer?.Name</label><br />
+                <label style="color:#2F4F4F">Album: @Model.Album</label><br />
+                <label style="color:#2F4F4F">Genre: @Model.Genre?.Name</label><br />
+                <label style="color:#2F4F4F">Added on: @Model.Date</label><br />
+                <label style="color:#2F4F4F">Size: @Model.Size</label><br />
+                <label style="color:#2F4F4F">Rate: @Model.Like likes</label><br />
+            </div>
+        </div>
+        @if (Context.Session.GetInt32("Status") > 0)
+        {
+            <div style="text-align:center">
+                <label style="color:#2F4F4F">Comment</label><br />
+                <form asp-action="Comment" method="post">
+                    <input type="text" name="comment" style="width:325px; height:75px" /><br /><br />
+                    <input type="submit" value="Post" class="button" asp-area="" asp-controller="HomeAudio" asp-action="Comment" />
+                </form>
+            </div>
+        }
+        <div class="commDiv">
+            @foreach(var m in ViewBag.Comments)
+            {
+                if(m.TrackId == iD)
+                {
+                    <div class="comm">
+                        @foreach (var u in ViewBag.Users)
+                        {
+                            if(m.UserId == u.Id)
+                            {
+                                <dt>@u.Login</dt>
+                            }
+                        }
+                        <dd>@m.Message</dd>
+                    </div>
+                }
+            }
+        </div>
+    </aside>
+    </div>
+</div>

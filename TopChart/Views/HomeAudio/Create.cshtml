@@ -1,0 +1,86 @@
+﻿@model TopChart_BLL.DTO.TracksDTO
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="width:800px">
+    <header>
+        <div id="header">
+            <a style="font-weight:bold; font-size:14pt; color:white; margin:5px" asp-area="" asp-controller="HomeAudio" asp-action="Audio">TOP Chart</a>
+            <div style="margin-right: 5px">
+                <div>
+                    <label style="text-align:center; width: 100px; color:white">Hello @Context.Session.GetString("Login")</label>
+                </div>
+                <div>
+                    <a asp-area="" asp-controller="HomeAudio" asp-action="Logout" style="font-size:10pt; color:white; display: inline-block; width: 100px;">Log out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div style="display:flex">
+        <main id="aside">
+            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">Menu</label><br />
+            <hr style="margin:1px" />
+            
+            <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeVideo" asp-action="Video">Video</a><br />
+            <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="Top">Top Chart</a><br />
+            <br /><br />
+        </main>
+    <aside id="main">
+    <div id="mainReg">
+        <h5 style="color:#2F4F4F; margin-top:30px">Create new track</h5>
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div style="text-align:center">
+                <label style="color:#2F4F4F; width:350px; text-align:left" asp-for="Name"></label><br />
+                <input style="width:350px" asp-for="Name" class="formControl" /><br />
+                <span style="font-size: 8pt" asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div style="text-align:center">
+                <label style="color:#2F4F4F; width:350px; text-align:left" asp-for="SingerId"></label><br />
+                <select style="width:350px" asp-for="SingerId" class="formControl">
+                            <option value=""></option>
+                            @foreach (var item in ViewBag.SingerId)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                </select><br />
+                <span style="font-size: 8pt" asp-validation-for="SingerId" class="text-danger"></span>
+            </div>
+            <div style="text-align:center">
+                <label style="color:#2F4F4F; width:350px; text-align:left" asp-for="Album"></label><br />
+                <input style="width:350px" asp-for="Album" class="formControl" /><br />
+                <span style="font-size: 8pt" asp-validation-for="Album" class="text-danger"></span>
+            </div>
+            <div style="text-align:center">
+                <label style="color:#2F4F4F; width:350px; text-align:left" asp-for="GenreId"></label><br />
+                <select style="width:350px" asp-for="GenreId" class="formControl">
+                            <option value=""></option>
+                            @foreach (var item in ViewBag.GenreId)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                </select><br />
+                <span style="font-size: 8pt" asp-validation-for="GenreId" class="text-danger"></span>
+            </div>
+            <br />
+            <div style="text-align:center">
+                <label style="color:#2F4F4F; width:350px; text-align:left" asp-for="Path"></label><br />
+                <input type="file" name="uploadedFile" /><br />
+                <span style="font-size: 8pt" asp-validation-for="Path" class="text-danger"></span>
+            </div>
+            <div style="margin-top: 15px; text-align:center">
+                <input type="submit" value="Save" class="button" />
+            </div>
+        </form>
+    </div>
+    </aside>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

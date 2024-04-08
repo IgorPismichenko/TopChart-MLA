@@ -1,0 +1,44 @@
+﻿@model TopChart_BLL.DTO.RegisterModelDTO
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<<div style="width:800px">
+    <header>
+        <div id="header">
+            <a style="font-weight:bold; font-size:14pt; color:white; margin:5px" asp-area="" asp-controller="Home" asp-action="Index">TOP Chart</a>
+        </div>
+    </header>
+    <div style="background-image:url('/Logo/dj.jpg');background-size:cover; width:800px;min-height:90vh; border-radius:7px; margin-top:10px;display:flex">
+        <div style="min-height:90vh; width:400px"></div>
+        <div style="min-height:90vh; width:400px; background-color: rgba(255,255,255,0.3)" id="mainReg">
+    <form asp-action="Register" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div>
+            
+            <input style="border-top:hidden; border-left:hidden" asp-for="Login" class="formControl" placeholder="login"/><br />
+            <span style="font-size: 8pt" asp-validation-for="Login" class="text-danger"></span>
+        </div>
+        <div>
+            
+            <input style="border-top:hidden; border-left:hidden" asp-for="Password" class="formControl" placeholder="password"/><br />
+            <span style="font-size: 8pt" asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div>
+            
+            <input style="border-top:hidden; border-left:hidden" asp-for="PasswordConfirm" class="formControl" placeholder="confirm password"/><br />
+            <span style="font-size: 8pt" asp-validation-for="PasswordConfirm" class="text-danger"></span>
+        </div>
+        <div style="margin-top: 15px; text-align:center">
+            <input type="submit" value="Sign In" class="button" />
+        </div>
+    </form>
+</div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

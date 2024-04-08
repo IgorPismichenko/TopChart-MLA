@@ -1,0 +1,77 @@
+﻿@model IEnumerable<TopChart_BLL.DTO.UsersDTO>
+
+@{
+    ViewData["Title"] = "EditUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="width:800px">
+    <header>
+        <div id="header">
+            <a style="font-weight:bold; font-size:14pt; color:white; margin:5px" asp-area="" asp-controller="HomeAudio" asp-action="Audio">TOP Chart</a>
+            <div style="margin-right: 5px">
+                <div>
+                    <label style="text-align:center; width: 100px; color:white">Hello @Context.Session.GetString("Login")</label>
+                </div>
+                <div>
+                    <a asp-area="" asp-controller="HomeAudio" asp-action="Logout" style="font-size:10pt; color:white; display: inline-block; width: 100px;">Log out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div style="display:flex">
+        <main id="aside">
+            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">Menu</label><br />
+            <hr style="margin:1px" />
+            
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="Create">New track</a>
+
+                <br />
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="CreateSinger">New singer</a>
+
+                <br />
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="CreateGenre">New genre</a>
+
+                <br />
+           
+        </main>
+        <aside id="main">
+            @if (Model.Count() > 0)
+            {
+                <div style="display:flex; flex-direction:column; justify-content:center;align-items:center">
+                    <label style="color:#2F4F4F; font-size:14px; font-weight:bold; margin-top:10px">Edit user</label>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Login</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        @foreach (var m in Model)
+                        {
+                            @if (m.Login != "admin" && m.Login != "Admin")
+                            {
+                                <tbody>
+                                    <tr>
+                                        <td>@m.Login</td>
+                                        <td>@m.Status</td>
+                                        <td>
+                                            <a id="a3" asp-controller="HomeAudio" asp-action="Edit" asp-route-id="@m.Id">Edit</a>|<a id="a3" asp-controller="HomeAudio" asp-action="Delete" asp-route-id="@m.Id">Delete</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            }
+                        }
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div style="text-align: center">
+                    <p>No one registered yet!</p>
+                    <img style="width: 450px; height: 400px" src="~/Logo/Vinil.png" />
+                </div>
+            }
+        </aside>
+    </div>
+</div>

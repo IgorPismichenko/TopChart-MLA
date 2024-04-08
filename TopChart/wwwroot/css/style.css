@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+* {
+    font-family: "Varela Round", sans-serif;
+}
+body {
+    margin-bottom: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #778899;
+}
+
+header {
+    text-align: center;
+    height: 50px;
+}
+#header {
+    width: 800px;
+    height: 50px;
+    background-color: #2F4F4F;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius:7px;
+}
+a {
+    text-decoration: none;
+}
+#a2 {
+    display: block;
+    border: solid 1.5px #0a2980;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #0a2980;
+    width: 100px;
+    color: #0a2980;
+    text-align: center;
+    background-color: yellow;
+    margin-bottom: 3px;
+}
+    #a2:hover {
+        color: aqua;
+    }
+#a3 {
+    color: red;
+    font-size: 10px;
+    border: 0;
+    box-shadow: none;
+}
+
+    #a3:hover {
+        color: orange;
+    }
+#main {
+    width: 550px;
+    min-height: 90vh;
+    background-color:white;
+    margin-top:10px;
+    border-radius:7px;
+}
+#aside {
+    width: 240px;
+    min-height: 90vh;
+    background-color: white;
+    margin-right: 10px;
+    margin-top: 10px;
+    border-radius: 7px;
+}
+
+.button {
+    width: 200px;
+    height: 25px;
+    background-color: #FF4500;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+    color: white;
+    /*box-shadow: -3px -3px 3px #F0FFFF, 3px 3px 3px #2F4F4F;*/
+}
+    .button:hover {
+        /*box-shadow: 2px 2px 2px #F0FFFF, -2px -2px 2px #2F4F4F;*/
+        background-color: #FF0000;
+    }
+
+#mainReg {
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+}
+label {
+    font-size: 8pt;
+    color: #0000FF;
+}
+#divTr {
+    margin-top: 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#divUser{
+    display:flex;
+}
+#divUserList {
+    text-align:center;
+    width: 600px;
+}
+#divMenuList{
+    width: 200px;
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+#labelEdit{
+    font-size: 12pt;
+    margin-inline: 5px;
+}
+th,td{
+    width: 150px;
+    text-align:center;
+}
+thead {
+    border: solid 2px #2F4F4F;
+    border-radius: 10px;
+    color: red;
+}
+tbody {
+    border: solid 2px #2F4F4F;
+    border-radius: 10px;
+    font-size: 10pt;
+    color: #2F4F4F;
+}
+audio {
+    height: 30px;
+}
+
+video {
+    width: 300px;
+    height: 200px;
+}
+#divSearch{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#search {
+    width: 375px;
+    height: 25px;
+    border: solid 1.5px white;
+    border-right:hidden;
+    border-radius: 5px 0 0 5px;
+}
+
+#searchButton {
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border: solid 1.5px white;
+    border-left: hidden;
+    border-radius: 0 5px 5px 0;
+    background-image: url(../Logo/Search.png);
+    background-size: cover;
+    margin:0;
+}
+#runningWrapper {
+    overflow: hidden;
+    margin-top: 0;
+    width: 390px;
+}
+#runningLabel {
+    white-space: nowrap;
+    animation: marquee 10s linear infinite;
+    font-size: 6pt;
+    color:red;
+}
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+#image{
+    width: 200px;
+    height:200px;
+}
+
+.comm {
+    width: 300px;
+    border-radius: 10px 10px 10px 0;
+    background-color: #2F4F4F;
+    color: white;
+    padding-left: 5px;
+    margin-bottom: 7px;
+    font-size: 8pt;
+}
+dt {
+    color: red;
+    font-size: 10pt;
+    padding:3px;
+}
+dd{
+    overflow-wrap:break-word;
+    padding: 3px;
+}
+.commDiv{
+    margin-top: 20px;
+    margin-left: 15px;
+    margin-bottom: 60px;
+}
+#aLike{
+    border: 0;
+    border-radius: 0;
+    box-shadow:none;
+    width:auto;
+}
+button {
+    border: none;
+    background-color: transparent;
+    color: #2F4F4F;
+    font-size:9pt;
+    margin-left:10px;
+}
+.formControl {
+    width: 200px;
+    height: 40px;
+    background-color: #F8F8FF;
+    border-radius: 7px;
+    border: 0px;
+    outline: none;
+    font-size: 8pt;
+    margin-top: 7px;
+    color: #2F4F4F;
+}
+    .formControl:hover {
+        border-right: solid 5px #FF4500;
+    }
+    .formControl::placeholder {
+        color: #B0E0E6;
+    }
+input:focus{
+    outline:none;
+}
+.likeIm {
+    width: 20px;
+    height: 20px;
+    margin-left: 5px
+}
+

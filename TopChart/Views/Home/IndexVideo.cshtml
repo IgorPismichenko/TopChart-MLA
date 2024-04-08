@@ -1,0 +1,86 @@
+﻿@model IEnumerable<TopChart_BLL.DTO.VideoDTO>
+
+@{
+    ViewData["Title"] = "IndexVideo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="width:800px">
+<header>
+    <div id="header">
+        <a style="font-weight:bold; font-size:14pt; color:white; margin:5px" asp-area="" asp-controller="Home" asp-action="IndexVideo">TOP Chart</a>
+        <div id="divSearch">
+            <form style="display:flex" asp-action="Search" method="post">
+                <input type="text" name="search" id="search" />
+                <input type="submit" value="" id="searchButton" asp-area="" asp-controller="Home" asp-action="SearchVideo" />
+            </form>
+        </div>
+        <a style="color:white; margin:5px; font-size:10pt" asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
+    </div>
+</header>
+    <div style="display:flex">
+        <main id="aside">
+            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">Menu</label><br />
+            <hr style="margin:1px" />
+            <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="Home" asp-action="Index">Audio</a><br />
+            <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="Home" asp-action="TopVideo">Top Chart</a><br />
+            <button id="singerButton">Singer</button><br />
+            <div id="sortSinger" style="display:none">
+                <a style="margin-left:25px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="Home" asp-action="SortByName">Name</a><br />
+                <a style="margin-left:25px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="Home" asp-action="SortByRate">Rate</a>
+            </div>
+            <button id="genreButton">Genre</button>
+            <div id="sortGenre" style="display:none">
+                @foreach (var m in ViewBag.Genre)
+                {
+                    <a style="margin-left:25px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="Home" asp-action="SortByGenre" asp-route-id="@m.Id">@m.Name</a>
+
+                    <br />
+                }
+            </div>
+            <br /><br />
+            <hr style="margin-bottom:5px" />
+            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">Top singers</label><br />
+            <div>
+                @for (var i = 0; i < ViewBag.TopSingers.Count; i++)
+                {
+                    <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="Home" asp-action="SortByName" asp-route-id="@ViewBag.TopSingers[i].Id">@ViewBag.TopSingers[i].Singer.Name</a>
+
+                    <br />
+                    if (i == 7)
+                        break;
+                }
+            </div>
+        </main>
+        <aside id="main">
+            @if (Model.Count() > 0)
+            {
+                <div style="display:flex; flex-direction:column; justify-content:center;align-items:center">
+                    <label style="color:#2F4F4F; font-size:14px; font-weight:bold; margin-top:10px">Latest arrivals</label>
+                    <div>
+                        @foreach (var m in Model)
+                        {
+                            <label style="color:#2F4F4F">@m.Name - @m.Singer?.Name</label>
+                            <div style="display:flex; justify-content:center;align-items:center">
+                                <video controls>
+                                    <source src="@m.Path" />
+                                </video>
+                                <img class="likeIm" src="/Logo/like.png" /><label style="color:#2F4F4F">@m.Like</label>
+                            </div>
+                            <div id="runningWrapper" style="width: 335px">
+                                <label id="runningLabel">Track: @m.Name, Singer: @m.Singer?.Name, Album: @m.Album, Genre: @m.Genre?.Name, Added on: @m.Date, Size: @m.Size </label>
+                            </div>
+                            <div><hr style="margin-top: 0; width:335px; border-color: #0a2980" /></div>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div style="text-align: center">
+                    <p>It`s nothing to play. Sign in to add some music!</p>
+                    <img style="width: 450px; height: 400px" src="~/Logo/Vinil.png" />
+                </div>
+            }
+        </aside>
+    </div>
+</div>

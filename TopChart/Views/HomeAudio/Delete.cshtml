@@ -1,0 +1,55 @@
+﻿@model TopChart_BLL.DTO.UsersDTO
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="width:800px">
+    <header>
+        <div id="header">
+            <a style="font-weight:bold; font-size:14pt; color:white; margin:5px" asp-area="" asp-controller="HomeVideo" asp-action="Video">TOP Chart</a>
+            <div style="margin-right: 5px">
+                <div>
+                    <label style="text-align:center; width: 100px; color:white">Hello @Context.Session.GetString("Login")</label>
+                </div>
+                <div>
+                    <a asp-area="" asp-controller="HomeVideo" asp-action="Logout" style="font-size:10pt; color:white; display: inline-block; width: 100px;">Log out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div style="display:flex">
+        <main id="aside">
+            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">Menu</label><br />
+            <hr style="margin:1px" />
+            @if (Context.Session.GetInt32("Status") == 1)
+            {
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeVideo" asp-action="Create">New track</a>
+
+                <br />
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeVideo" asp-action="CreateSinger">New singer</a>
+
+                <br />
+            }
+            else if (Context.Session.GetInt32("Status") == 2)
+            {
+                <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="EditUser">UsersList</a>                
+            }
+            
+        </main>
+        <aside id="main">
+            <div style="text-align:center">
+                <p>Are you sure you want to delete @Model.Login?</p>
+            </div>
+            <div id="mainReg">
+                <form asp-action="Delete">
+                    <div style="text-align:center">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="submit" value="Delete" class="button" />
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+</div>
