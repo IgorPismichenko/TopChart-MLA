@@ -14,14 +14,16 @@ namespace TopChart.Controllers
         ISingersService repoSing;
         IUsersService repoUsers;
         ICommentsService repoComm;
+        IMessagesService repoMess;
         IWebHostEnvironment _appEnvironment;
-        public HomeAudioController(ITracksService r, IGenresService g, ISingersService s, IUsersService u, ICommentsService c,  IWebHostEnvironment appEnvironment)
+        public HomeAudioController(ITracksService r, IGenresService g, ISingersService s, IUsersService u, ICommentsService c, IMessagesService m, IWebHostEnvironment appEnvironment)
         {
             repo = r;
             repoGen = g;
             repoSing = s;
             repoUsers = u;
             repoComm = c;
+            repoMess = m;
             _appEnvironment = appEnvironment;
         }
         public async Task<IActionResult> Audio()
@@ -191,8 +193,7 @@ namespace TopChart.Controllers
             {
                 try
                 {
-                    repoUsers.Update(user);
-                    await repoUsers.Save();
+                    await repoUsers.Update(user);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -380,6 +381,12 @@ namespace TopChart.Controllers
                 }
             }
             return View("Audio", model);
+        }
+        public async Task<IActionResult> Chatting()
+        {
+            //ViewData["Users"] = repoUsers.GetUsersList();
+            var model = await repoMess.GetMessagesList();
+            return View("Chat", model);
         }
     }
 }

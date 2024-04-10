@@ -16,7 +16,7 @@ namespace TopChart_BLL.Interfaces
         UsersDTO GetUserById(int? Id);
         bool UserExists(int id);
         Task Create(UsersDTO item);
-        void Update(UsersDTO item);
+        Task Update(UsersDTO item);
         Task Delete(int id);
         Task Save();
     }

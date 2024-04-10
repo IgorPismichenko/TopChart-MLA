@@ -10,7 +10,7 @@ namespace TopChart_DLL.Interfaces
         Users GetUserById(int? Id);
         bool UserExists(int id);
         Task Create(Users item);
-        void Update(Users item);
+        Task Update(Users item);
         Task Delete(int id);
         Task Save();
     }

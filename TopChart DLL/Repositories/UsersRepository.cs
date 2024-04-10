@@ -71,9 +71,10 @@ namespace TopChart_DLL.Repositories
             }
         }
 
-        public void Update(Users u)
+        public async Task Update(Users u)
         {
             _context.Entry(u).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         public async Task Delete(int id)

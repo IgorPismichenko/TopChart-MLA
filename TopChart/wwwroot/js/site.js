@@ -6,6 +6,7 @@ let content = document.getElementById('sortSinger');
 let buttonG = document.getElementById('genreButton');
 let contentG = document.getElementById('sortGenre');
 
+
 button.addEventListener('click', function () {
     if (content.style.display === 'none') {
         content.style.display = 'block';
@@ -21,3 +22,5 @@ buttonG.addEventListener('click', function () {
         contentG.style.display = 'none';
     }
 });
+
+

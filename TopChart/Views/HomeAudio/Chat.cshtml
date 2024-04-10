@@ -1,0 +1,164 @@
+﻿@model IEnumerable<TopChart_BLL.DTO.MessagesDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    
+    <script>
+        const date = new Date();
+        const login = 
+        $(function () {
+            $('#chatRoom').hide();
+            $('#inputForm').hide();
+            $('#chatEnter').show();
+            const hubConnection = new signalR.HubConnectionBuilder()
+                .withUrl("/chat")
+                .build();
+
+            hubConnection.on("AddMessage", function (name, message) {
+                    $('#chatRoom').append('<div class="chatDiv"><label class="chatLabel2">' + htmlEncode(name) + '</label><br /><p class="chatP">' + htmlEncode(message) + '</p><label class="chatLabel2">' + date + '</label><br/></div>');
+            });
+
+            hubConnection.on("Connected", function (id, userName, allUsers) {
+                $('#chatEnter').hide();
+                $('#chatRoom').show();
+                $('#inputForm').show();
+                $('#hdId').val(id);
+                
+                for (i = 0; i < allUsers.length; i++) {
+
+                    AddUser(allUsers[i].connectionId, allUsers[i].login);
+                }
+            });
+
+            hubConnection.on("NewUserConnected", function (id, name) {
+
+                AddUser(id, name);
+            });
+
+            hubConnection.on("UserDisconnected", function (id, userName) {
+
+                    $('#' + id).remove();
+            });
+
+            
+            hubConnection.start()
+                .then(function () {
+                   
+                    
+                    
+                    $('#sendmessage').click(function () {
+                        
+                        hubConnection.invoke("Send", $('#hdLogin').val(), $('#message').val())
+                            .catch(function (err) {
+                                return console.error(err.toString());
+                            });
+                        $('#message').val('');
+                    });
+                    $("#btnEnter").click(function () {
+                            let name = $("#hdLogin").val();
+                        hubConnection.invoke("Connect", name)
+                            .catch(function (err) {
+                                return console.error(err.toString());
+                            });
+
+                    });
+                })
+                .catch(function (err) {
+                    return console.error(err.toString());
+                });
+        });
+
+        function htmlEncode(value) {
+            let encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
+        
+        function AddUser(id, name) {
+
+            let userId = $('#hdId').val();
+
+            if (name !== undefined && userId !== id) {
+
+                $("#chatUsers").append('<label class="chatLabel" id="' + id + '">' + name + '</label><br />');
+            }
+        }
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<div style="width:800px">
+    <header>
+        <div id="header">
+            <a style="font-weight:bold; font-size:14pt; color:white; margin:5px" asp-area="" asp-controller="HomeAudio" asp-action="Audio">TOP Chart</a>
+            <div id="divSearch">
+                
+            </div>
+            <div style="margin-right: 5px">
+                <div>
+                    <label id="userLogin" style="text-align:center; width: 100px; color:white">Hello @Context.Session.GetString("Login")</label>
+                    <input id="hdLogin" type="hidden" value="@Context.Session.GetString("Login")" />
+                </div>
+                <div>
+                    <a asp-area="" asp-controller="HomeAudio" asp-action="Logout" style="font-size:10pt; color:white; display: inline-block; width: 100px;">Log out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div style="display:flex">
+        <main id="aside">
+            <div id="chatUsers" style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">
+                <p>Users Online:</p>
+            </div>
+            <input id="hdId" type="hidden" />
+        </main>
+        <aside id="main" style="height:80vh">
+            @if (Model.Count() > 0)
+            {
+                <div style="display:flex; flex-direction:column; justify-content:center;align-items:center">
+                    <label style="color:#2F4F4F; font-size:14px; font-weight:bold; margin-top:10px">Chat</label>
+                    <div id="chatEnter">
+                        <input id="btnEnter" type="button" value="Enter" />
+                    </div>
+                    <div id="chatRoom" style="height:450px; max-height:450px;width:400px; overflow-y:auto">
+                        @foreach (var m in Model)
+                        {
+                            <div class="chatDiv">
+                            <label class="chatLabel2">@m.User?.Login</label><br />
+                            <p class="chatP">@m.Message</p>
+                            <label class="chatLabel2">@m.Date</label><br />
+                            </div>
+                        }
+                    </div>
+                    <div id="inputForm">
+                        <input type="text" id="message"/>
+                        <input type="button" id="sendmessage" value="Send"/>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div style="display:flex; flex-direction:column; justify-content:center;align-items:center">
+                <div style="text-align: center">
+                    <p>Chat</p>
+                </div>
+                <div id="chatEnter">
+                    <input id="btnEnter" type="button" value="Enter Chat"  />
+                </div>
+                <div id="chatRoom" style="height:450px; max-height:450px; width:400px; overflow-y:auto; display:block">
+                    
+                </div>
+                <div id="inputForm">
+                    <input type="text" id="message" />
+                    <input type="button" id="sendmessage" value="Send" />
+                </div>
+                </div>
+            }
+        </aside>
+    </div>
+</div>

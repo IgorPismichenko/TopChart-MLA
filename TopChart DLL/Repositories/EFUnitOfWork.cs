@@ -18,6 +18,7 @@ namespace TopChart_DLL.Repositories
         private TracksRepository tracksRepository;
         private UsersRepository usersRepository;
         private VideoRepository videoRepository;
+        private MessagesRepository messagesRepository;
 
         public EFUnitOfWork(TopChartDbMLAContext context)
         {
@@ -84,6 +85,15 @@ namespace TopChart_DLL.Repositories
                 if (videoRepository == null)
                     videoRepository = new VideoRepository(db);
                 return videoRepository;
+            }
+        }
+        public IRepositoryMessages Messages
+        {
+            get
+            {
+                if (messagesRepository == null)
+                    messagesRepository = new MessagesRepository(db);
+                return messagesRepository;
             }
         }
         public async Task Save()

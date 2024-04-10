@@ -71,6 +71,7 @@ namespace TopChart_BLL.Services
             return new UsersDTO
             {
                Id = item.Id,
+               ConnectionId = item.ConnectionId,
                Login = item.Login,
                Password = item.Password,
                Salt = item.Salt,
@@ -88,6 +89,7 @@ namespace TopChart_BLL.Services
             var user = new Users
             {
                 Id = item.Id,
+                ConnectionId = item.ConnectionId,
                 Login = item.Login,
                 Password = item.Password,
                 Salt = item.Salt,
@@ -95,17 +97,19 @@ namespace TopChart_BLL.Services
             };
             await Database.Users.Create(user);
         }
-        public void Update(UsersDTO item)
+        public async Task Update(UsersDTO item)
         {
             var user = new Users
             {
                 Id = item.Id,
+                ConnectionId = item.ConnectionId,
                 Login = item.Login,
                 Password = item.Password,
                 Salt = item.Salt,
                 Status = item.Status
             };
-            Database.Users.Update(user);
+            await Database.Users.Update(user);
+            await Database.Save();
         }
         public async Task Delete(int id)
         {

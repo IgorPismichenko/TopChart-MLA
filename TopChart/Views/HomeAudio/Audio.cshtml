@@ -30,11 +30,13 @@
             <hr style="margin:1px" />
             @if (Context.Session.GetInt32("Status") == 1)
             {
+                <a class="blink" asp-area="" asp-controller="HomeAudio" asp-action="Chatting">Chat</a><br />
                 <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="Create">New track</a><br />
                 <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="CreateSinger">New singer</a><br />
             }
             else if (Context.Session.GetInt32("Status") == 2)
             {
+                <a class="blink" asp-area="" asp-controller="HomeAudio" asp-action="Chatting">Chat</a><br />
                 <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="EditUser">UsersList</a><br />
                 <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="Create">New track</a><br />
                 <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="HomeAudio" asp-action="CreateSinger">New singer</a><br />

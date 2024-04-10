@@ -11,6 +11,7 @@ namespace TopChart_DLL.Interfaces
         IRepositoryTracks Tracks { get; }
         IRepositoryUsers Users { get; }
         IRepositoryVideo Videos { get; }
+        IRepositoryMessages Messages { get; }
         Task Save();
     }
 }
