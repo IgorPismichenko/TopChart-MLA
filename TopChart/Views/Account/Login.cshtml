@@ -16,21 +16,22 @@
             <form asp-action="Login" method="post" enctype="multipart/form-data" >
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div>
-                
-                <input asp-for="Login" class="formControl" placeholder="login"/><br />
+
+                    <input asp-for="Login" class="formControl" placeholder="@Resources.Resource.Login" /><br />
                 <span style="font-size: 8pt" asp-validation-for="Login" class="text-danger"></span>
             </div>
             <div>
-                
-                <input asp-for="Password" class="formControl" placeholder="password"/><br />
+
+                    <input asp-for="Password" class="formControl" placeholder="@Resources.Resource.Password" /><br />
                 <span style="font-size: 8pt" asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div style="margin-top: 15px; text-align:center">
-                <input type="submit" value="Enter" class="button" />
+                    <input type="submit" value="@Resources.Resource.Enter" class="button" />
             </div>
             <div style="margin-top: 5px; text-align:center">
-                <label style="color:#00FFFF">Don`t have account?
-                <a style="border: 0; color: red; font-size: 8pt; box-shadow:none" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                    <label style="color:#00FFFF">
+                        @Resources.Resource.DHA?
+                        <a style="border: 0; color: red; font-size: 8pt; box-shadow:none" asp-area="" asp-controller="Account" asp-action="Register">@Resources.Resource.Register</a>
                 </label>
             </div>
             </form>

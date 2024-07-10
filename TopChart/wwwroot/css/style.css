@@ -284,9 +284,39 @@ input:focus{
     height: 20px;
     margin-left: 5px;
 }
+.logimg {
+    width: 20px;
+    height: 20px;
+}
+.langInput {
+    width: 70px;
+    height: 25px;
+    background-color: transparent;
+    border: 0;
+    color:white;
+    font-size: 7pt;
+}
+    .langInput option {
+        background-color: #2F4F4F;
+    }
+    .langInput:focus {
+        background-color: transparent;
+        border: 0;
+        border-color:transparent;
+        color: white;
+        font-size: 7pt;
+    }
+.okBtn {
+    width: 26px;
+    height: 26px;
+    background-color: transparent;
+    border:0;
+    color: white;
+    font-size: 7pt;
+}
 .chatLabel {
     color: #2F4F4F;
-    font-size:12pt;
+    font-size: 12pt;
 }
 .chatLabel2 {
     color: #2F4F4F;

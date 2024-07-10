@@ -16,22 +16,22 @@
     <form asp-action="Register" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div>
-            
-            <input style="border-top:hidden; border-left:hidden" asp-for="Login" class="formControl" placeholder="login"/><br />
+
+                    <input style="border-top:hidden; border-left:hidden" asp-for="Login" class="formControl" placeholder="@Resources.Resource.Login" /><br />
             <span style="font-size: 8pt" asp-validation-for="Login" class="text-danger"></span>
         </div>
         <div>
-            
-            <input style="border-top:hidden; border-left:hidden" asp-for="Password" class="formControl" placeholder="password"/><br />
+
+                    <input style="border-top:hidden; border-left:hidden" asp-for="Password" class="formControl" placeholder="@Resources.Resource.Password" /><br />
             <span style="font-size: 8pt" asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div>
-            
-            <input style="border-top:hidden; border-left:hidden" asp-for="PasswordConfirm" class="formControl" placeholder="confirm password"/><br />
+
+                    <input style="border-top:hidden; border-left:hidden" asp-for="PasswordConfirm" class="formControl" placeholder="@Resources.Resource.ConfirmPassword" /><br />
             <span style="font-size: 8pt" asp-validation-for="PasswordConfirm" class="text-danger"></span>
         </div>
         <div style="margin-top: 15px; text-align:center">
-            <input type="submit" value="Sign In" class="button" />
+                    <input type="submit" value="@Resources.Resource.SignIn" class="button" />
         </div>
     </form>
 </div>

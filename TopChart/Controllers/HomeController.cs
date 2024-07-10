@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using TopChart.Filters;
 using TopChart_BLL.DTO;
 using TopChart_BLL.Interfaces;
 
 namespace TopChart.Controllers
 {
+    [Culture]
     public class HomeController : Controller
     {
         ITracksService repo;
@@ -20,6 +22,7 @@ namespace TopChart.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["Genre"] = await repoGen.GetGenresList();
             var tmp = await repo.GetTracksList();
             for (int i = 0; i < tmp.Count; i++)
@@ -40,6 +43,7 @@ namespace TopChart.Controllers
         }
         public async Task<IActionResult> IndexVideo()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["Genre"] = await repoGen.GetGenresList();
             var tmp = await repo.GetTracksList();
             for (int i = 0; i < tmp.Count; i++)
@@ -62,6 +66,7 @@ namespace TopChart.Controllers
         [HttpPost]
         public async Task<IActionResult> Search(string search)
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["Genre"] = await repoGen.GetGenresList();
             var tmp = await repo.GetTracksList();
             for (int i = 0; i < tmp.Count; i++)
@@ -88,6 +93,7 @@ namespace TopChart.Controllers
         [HttpPost]
         public async Task<IActionResult> SearchVideo(string search)
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["Genre"] = await repoGen.GetGenresList();
             var tmp = await repo.GetTracksList();
             for (int i = 0; i < tmp.Count; i++)
@@ -113,6 +119,7 @@ namespace TopChart.Controllers
 
         public async Task<IActionResult> Top()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["Genre"] = await repoGen.GetGenresList();
             var tmp = await repo.GetTracksList();
             for (int i = 0; i < tmp.Count; i++)
@@ -146,6 +153,7 @@ namespace TopChart.Controllers
 
         public async Task<IActionResult> TopVideo()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["Genre"] = await repoGen.GetGenresList();
             var tmp = await repo.GetTracksList();
             for (int i = 0; i < tmp.Count; i++)
@@ -175,6 +183,21 @@ namespace TopChart.Controllers
                 }
             }
             return View("IndexVideo", model);
+        }
+
+        public ActionResult ChangeCulture(string lang)
+        {
+            string? returnUrl = HttpContext.Session.GetString("path") ?? "/Home/Index";
+            List<string> cultures = new List<string>() { "en", "uk", "it" };
+            if (!cultures.Contains(lang))
+            {
+                lang = "en";
+            }
+
+            CookieOptions option = new CookieOptions();
+            option.Expires = DateTime.Now.AddDays(10);
+            Response.Cookies.Append("lang", lang, option);
+            return Redirect(returnUrl);
         }
     }
 }

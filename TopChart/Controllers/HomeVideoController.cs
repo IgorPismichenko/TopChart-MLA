@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TopChart.Filters;
 using TopChart_BLL.DTO;
 using TopChart_BLL.Interfaces;
 
 namespace TopChart.Controllers
 {
+    [Culture]
     public class HomeVideoController : Controller
     {
         IVideoService repo;
@@ -25,6 +27,7 @@ namespace TopChart.Controllers
         }
         public async Task<IActionResult> Video()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["Genre"] = await repoGen.GetGenresList();
             var tmp = await repo.GetVideoList();
             for (int i = 0; i < tmp.Count; i++)
@@ -47,6 +50,7 @@ namespace TopChart.Controllers
         }
         public IActionResult Create()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["SingerId"] = new SelectList(repoSing.GetValues(), "Id", "Name");
             ViewData["GenreId"] = new SelectList(repoGen.GetValues(), "Id", "Name");
             return View();
@@ -85,6 +89,7 @@ namespace TopChart.Controllers
 
         public IActionResult CreateGenre()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             return View();
         }
 
@@ -104,6 +109,7 @@ namespace TopChart.Controllers
 
         public IActionResult CreateSinger()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             return View();
         }
 
@@ -131,12 +137,14 @@ namespace TopChart.Controllers
         }
         public ActionResult Logout()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
         [HttpPost]
         public async Task<IActionResult> SearchVideo(string search)
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["Genre"] = await repoGen.GetGenresList();
             var tmp = await repo.GetVideoList();
             for (int i = 0; i < tmp.Count; i++)
@@ -162,6 +170,7 @@ namespace TopChart.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
+            HttpContext.Session.SetString("path", Request.Path);
             if (id == null)
             {
                 return NotFound();
@@ -196,6 +205,7 @@ namespace TopChart.Controllers
         [HttpPost]
         public async Task<IActionResult> CommentVideo([Bind("Id")] CommentVideoDTO comm, string comment)
         {
+            HttpContext.Session.SetString("path", Request.Path);
             comm.Message = comment;
             comm.Date = DateTime.Now.ToString();
             string? login = HttpContext.Session.GetString("Login");
@@ -235,6 +245,7 @@ namespace TopChart.Controllers
 
         public async Task<IActionResult> LikeVideo(int? id)
         {
+            HttpContext.Session.SetString("path", Request.Path);
             VideoDTO track = await repo.GetTrack(id);
             track.Like += 1;
             await repo.Update(track);
@@ -262,6 +273,7 @@ namespace TopChart.Controllers
 
         public async Task<IActionResult> TopVideo()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["Genre"] = await repoGen.GetGenresList();
             var tmp = await repo.GetVideoList();
             for (int i = 0; i < tmp.Count; i++)
@@ -291,6 +303,21 @@ namespace TopChart.Controllers
                 }
             }
             return View("Video", model);
+        }
+
+        public ActionResult ChangeCulture(string lang)
+        {
+            string? returnUrl = HttpContext.Session.GetString("path") ?? "/HomeVideo/Index";
+            List<string> cultures = new List<string>() { "en", "uk", "it" };
+            if (!cultures.Contains(lang))
+            {
+                lang = "en";
+            }
+
+            CookieOptions option = new CookieOptions();
+            option.Expires = DateTime.Now.AddDays(10);
+            Response.Cookies.Append("lang", lang, option);
+            return Redirect(returnUrl);
         }
     }
 }

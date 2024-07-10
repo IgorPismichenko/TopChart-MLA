@@ -10,6 +10,12 @@ builder.Services.AddTopChartMLAContext(connection);
 builder.Services.AddUnitOfWorkService();
 builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10); 
+    options.Cookie.Name = "Session";
+
+});
 builder.Services.AddSession();
 builder.Services.AddSignalR();
 builder.Services.AddTransient<ICommentsService, CommentsService>();

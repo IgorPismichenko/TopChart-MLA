@@ -14,21 +14,31 @@
                 <input type="submit" value="" id="searchButton" asp-area="" asp-controller="Home" asp-action="SearchVideo" />
             </form>
         </div>
-        <a style="color:white; margin:5px; font-size:10pt" asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
+            @using (Html.BeginForm("ChangeCulture", "Home"))
+            {
+                <select name="lang" class="langInput">
+                    <option value="">@Resources.Resource.Language</option>
+                    <option value="en">English</option>
+                    <option value="uk">Українська</option>
+                    <option value="it">Italiano</option>
+                </select>
+                <input type="submit" name="submit" value="Ok" class="okBtn">
+            }
+         <a style="color:white; margin:5px; font-size:10pt" asp-area="" asp-controller="Account" asp-action="Login"><img style="width:20px; height:20px" src="~/Logo/login.png" alt="LogIn" /></a>
     </div>
 </header>
     <div style="display:flex">
         <main id="aside">
-            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">Menu</label><br />
+            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">@Resources.Resource.Menu</label><br />
             <hr style="margin:1px" />
-            <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="Home" asp-action="Index">Audio</a><br />
+            <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="Home" asp-action="Index">@Resources.Resource.Audio</a><br />
             <a style="margin-left:15px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="Home" asp-action="TopVideo">Top Chart</a><br />
-            <button id="singerButton">Singer</button><br />
+            <button id="singerButton">@Resources.Resource.Singer</button><br />
             <div id="sortSinger" style="display:none">
                 <a style="margin-left:25px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="Home" asp-action="SortByName">Name</a><br />
                 <a style="margin-left:25px; color:#2F4F4F; font-size:12px" asp-area="" asp-controller="Home" asp-action="SortByRate">Rate</a>
             </div>
-            <button id="genreButton">Genre</button>
+            <button id="genreButton">@Resources.Resource.Genre</button>
             <div id="sortGenre" style="display:none">
                 @foreach (var m in ViewBag.Genre)
                 {
@@ -39,7 +49,7 @@
             </div>
             <br /><br />
             <hr style="margin-bottom:5px" />
-            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">Top singers</label><br />
+            <label style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">@Resources.Resource.TopSingers</label><br />
             <div>
                 @for (var i = 0; i < ViewBag.TopSingers.Count; i++)
                 {
@@ -55,7 +65,7 @@
             @if (Model.Count() > 0)
             {
                 <div style="display:flex; flex-direction:column; justify-content:center;align-items:center">
-                    <label style="color:#2F4F4F; font-size:14px; font-weight:bold; margin-top:10px">Latest arrivals</label>
+                    <label style="color:#2F4F4F; font-size:14px; font-weight:bold; margin-top:10px">@Resources.Resource.LatestArrivals</label>
                     <div>
                         @foreach (var m in Model)
                         {
@@ -67,7 +77,7 @@
                                 <img class="likeIm" src="/Logo/like.png" /><label style="color:#2F4F4F">@m.Like</label>
                             </div>
                             <div id="runningWrapper" style="width: 335px">
-                                <label id="runningLabel">Track: @m.Name, Singer: @m.Singer?.Name, Album: @m.Album, Genre: @m.Genre?.Name, Added on: @m.Date, Size: @m.Size </label>
+                                <label id="runningLabel">@Resources.Resource.Track: @m.Name, @Resources.Resource.Singer: @m.Singer?.Name, @Resources.Resource.Album: @m.Album, @Resources.Resource.Genre: @m.Genre?.Name, @Resources.Resource.AddedOn: @m.Date, @Resources.Resource.Size: @m.Size </label>
                             </div>
                             <div><hr style="margin-top: 0; width:335px; border-color: #0a2980" /></div>
                         }

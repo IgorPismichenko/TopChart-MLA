@@ -96,16 +96,26 @@
     <header>
         <div id="header">
             <a style="font-weight:bold; font-size:14pt; color:white; margin:5px" asp-area="" asp-controller="HomeAudio" asp-action="Audio">TOP Chart</a>
-            <div id="divSearch">
+            <div id="divSearch" style="width:400px">
                 
             </div>
+            @using (Html.BeginForm("ChangeCulture", "Home"))
+            {
+                <select name="lang" class="langInput">
+                    <option value="">@Resources.Resource.Language</option>
+                    <option value="en">English</option>
+                    <option value="uk">Українська</option>
+                    <option value="it">Italiano</option>
+                </select>
+                <input type="submit" name="submit" value="Ok" class="okBtn">
+            }
             <div style="margin-right: 5px">
                 <div>
-                    <label id="userLogin" style="text-align:center; width: 100px; color:white">Hello @Context.Session.GetString("Login")</label>
+                    <label id="userLogin" style="text-align:center; width: 100px; color:white">@Resources.Resource.Hello @Context.Session.GetString("Login")</label>
                     <input id="hdLogin" type="hidden" value="@Context.Session.GetString("Login")" />
                 </div>
                 <div>
-                    <a asp-area="" asp-controller="HomeAudio" asp-action="Logout" style="font-size:10pt; color:white; display: inline-block; width: 100px;">Log out</a>
+                    <a asp-area="" asp-controller="HomeAudio" asp-action="Logout" style="font-size:10pt; color:white; display: inline-block; width: 100px;"><img style="width:20px; height:20px" src="~/Logo/logout.png" alt="LogOut" /></a>
                 </div>
             </div>
         </div>
@@ -113,7 +123,7 @@
     <div style="display:flex">
         <main id="aside">
             <div id="chatUsers" style="font-weight:bold; font-size:12pt; color:#2F4F4F; margin:7px 0 0 10px">
-                <p>Users Online:</p>
+                <p>@Resources.Resource.UsersOnline:</p>
             </div>
             <input id="hdId" type="hidden" />
         </main>
@@ -121,9 +131,9 @@
             @if (Model.Count() > 0)
             {
                 <div style="display:flex; flex-direction:column; justify-content:center;align-items:center">
-                    <label style="color:#2F4F4F; font-size:14px; font-weight:bold; margin-top:10px">Chat</label>
+                    <label style="color:#2F4F4F; font-size:14px; font-weight:bold; margin-top:10px">@Resources.Resource.Chat</label>
                     <div id="chatEnter">
-                        <input id="btnEnter" type="button" value="Enter" />
+                        <input id="btnEnter" type="button" value="@Resources.Resource.Enter" />
                     </div>
                     <div id="chatRoom" style="height:450px; max-height:450px;width:400px; overflow-y:auto">
                         @foreach (var m in Model)
@@ -137,7 +147,7 @@
                     </div>
                     <div id="inputForm">
                         <input type="text" id="message"/>
-                        <input type="button" id="sendmessage" value="Send"/>
+                        <input type="button" id="sendmessage" value="@Resources.Resource.Send" />
                     </div>
                 </div>
             }
@@ -145,17 +155,17 @@
             {
                 <div style="display:flex; flex-direction:column; justify-content:center;align-items:center">
                 <div style="text-align: center">
-                    <p>Chat</p>
+                        <p>@Resources.Resource.Chat</p>
                 </div>
                 <div id="chatEnter">
-                    <input id="btnEnter" type="button" value="Enter Chat"  />
+                        <input id="btnEnter" type="button" value="@Resources.Resource.Enter" />
                 </div>
                 <div id="chatRoom" style="height:450px; max-height:450px; width:400px; overflow-y:auto; display:block">
                     
                 </div>
                 <div id="inputForm">
                     <input type="text" id="message" />
-                    <input type="button" id="sendmessage" value="Send" />
+                        <input type="button" id="sendmessage" value="@Resources.Resource.Send" />
                 </div>
                 </div>
             }

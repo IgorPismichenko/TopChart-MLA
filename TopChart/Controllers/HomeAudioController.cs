@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TopChart.Filters;
 using TopChart_BLL.DTO;
 using TopChart_BLL.Interfaces;
 using TopChart_DLL.Entities;
 
 namespace TopChart.Controllers
 {
+    [Culture]
     public class HomeAudioController : Controller
     {
         ITracksService repo;
@@ -28,6 +30,7 @@ namespace TopChart.Controllers
         }
         public async Task<IActionResult> Audio()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["Genre"] = await repoGen.GetGenresList();
             var tmp = await repo.GetTracksList();
             for (int i = 0; i < tmp.Count; i++)
@@ -51,12 +54,14 @@ namespace TopChart.Controllers
 
         public async Task<IActionResult> EditUser()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             var model = await repoUsers.GetUsersList();
             return View(model);
         }
 
         public IActionResult Create()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["SingerId"] = new SelectList(repoSing.GetValues(), "Id", "Name");
             ViewData["GenreId"] = new SelectList(repoGen.GetValues(), "Id", "Name");
             return View();
@@ -95,6 +100,7 @@ namespace TopChart.Controllers
 
         public IActionResult CreateGenre()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             return View();
         }
 
@@ -114,6 +120,7 @@ namespace TopChart.Controllers
 
         public IActionResult CreateSinger()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             return View();
         }
 
@@ -142,6 +149,7 @@ namespace TopChart.Controllers
 
         public IActionResult Delete(int? id)
         {
+            HttpContext.Session.SetString("path", Request.Path);
             if (id == null)
             {
                 return NotFound();
@@ -168,6 +176,7 @@ namespace TopChart.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
+            HttpContext.Session.SetString("path", Request.Path);
             if (id == null)
             {
                 return NotFound();
@@ -212,6 +221,7 @@ namespace TopChart.Controllers
         }
         public ActionResult Logout()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
@@ -219,6 +229,7 @@ namespace TopChart.Controllers
         [HttpPost]
         public async Task<IActionResult> Search(string search)
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["Genre"] = await repoGen.GetGenresList();
             var tmp = await repo.GetTracksList();
             for (int i = 0; i < tmp.Count; i++)
@@ -244,6 +255,7 @@ namespace TopChart.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
+            HttpContext.Session.SetString("path", Request.Path);
             if (id == null)
             {
                 return NotFound();
@@ -278,6 +290,7 @@ namespace TopChart.Controllers
         [HttpPost]
         public async Task<IActionResult> Comment([Bind("Id")] CommentDTO comm, string comment)
         {
+            HttpContext.Session.SetString("path", Request.Path);
             comm.Message = comment;
             comm.Date = DateTime.Now.ToString();
             string? login = HttpContext.Session.GetString("Login");
@@ -317,6 +330,7 @@ namespace TopChart.Controllers
 
         public async Task<IActionResult> Like(int? id)
         {
+            HttpContext.Session.SetString("path", Request.Path);
             if (id == null)
             {
                 return NotFound();
@@ -352,6 +366,7 @@ namespace TopChart.Controllers
 
         public async Task<IActionResult> Top()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["Genre"] = await repoGen.GetGenresList();
             var tmp = await repo.GetTracksList();
             for (int i = 0; i < tmp.Count; i++)
@@ -384,9 +399,24 @@ namespace TopChart.Controllers
         }
         public async Task<IActionResult> Chatting()
         {
-            //ViewData["Users"] = repoUsers.GetUsersList();
+            HttpContext.Session.SetString("path", Request.Path);
             var model = await repoMess.GetMessagesList();
             return View("Chat", model);
+        }
+
+        public ActionResult ChangeCulture(string lang)
+        {
+            string? returnUrl = HttpContext.Session.GetString("path") ?? "/HomeAudio/Index";
+            List<string> cultures = new List<string>() { "en", "uk", "it" };
+            if (!cultures.Contains(lang))
+            {
+                lang = "en";
+            }
+
+            CookieOptions option = new CookieOptions();
+            option.Expires = DateTime.Now.AddDays(10);
+            Response.Cookies.Append("lang", lang, option);
+            return Redirect(returnUrl);
         }
     }
 }

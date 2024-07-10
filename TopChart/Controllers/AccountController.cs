@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
+using TopChart.Filters;
 using TopChart_BLL.DTO;
 using TopChart_BLL.Interfaces;
 
 namespace TopChart.Controllers
 {
+    [Culture]
     public class AccountController : Controller
     {
         IUsersService repo;
@@ -16,6 +18,7 @@ namespace TopChart.Controllers
         }
         public ActionResult Login()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             return View();
         }
 
@@ -58,6 +61,7 @@ namespace TopChart.Controllers
 
         public IActionResult Register()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             return View();
         }
 
@@ -97,6 +101,21 @@ namespace TopChart.Controllers
                 return RedirectToAction("Login");
             }
             return View(reg);
+        }
+
+        public ActionResult ChangeCulture(string lang)
+        {
+            string? returnUrl = HttpContext.Session.GetString("path") ?? "/Home/Index";
+            List<string> cultures = new List<string>() { "en", "uk", "it" };
+            if (!cultures.Contains(lang))
+            {
+                lang = "en";
+            }
+
+            CookieOptions option = new CookieOptions();
+            option.Expires = DateTime.Now.AddDays(10);
+            Response.Cookies.Append("lang", lang, option);
+            return Redirect(returnUrl);
         }
     }
 }
